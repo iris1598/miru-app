@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import 'package:miru_app/models/danmaku_module.dart';
+import 'package:mobx/mobx.dart';
+
 import 'package:miru_app/models/extension.dart';
 import 'package:miru_app/controllers/watch/video_controller.dart';
 import 'package:miru_app/views/widgets/watch/playlist.dart';
 import 'package:miru_app/views/pages/watch/video/video_player_content.dart';
 import 'package:miru_app/data/services/extension_service.dart';
 import 'package:miru_app/views/widgets/platform_widget.dart';
+import 'package:canvas_danmaku/canvas_danmaku.dart';
 
 class VideoPlayer extends StatefulWidget {
   const VideoPlayer({
@@ -34,6 +38,9 @@ class VideoPlayer extends StatefulWidget {
 
 class _VideoPlayerState extends State<VideoPlayer> {
   late VideoPlayerController _c;
+  late DanmakuController _controller;
+  @observable
+  Map<int, List<Danmaku>> danDanmakus = {};
 
   @override
   void initState() {
@@ -105,6 +112,12 @@ class _VideoPlayerState extends State<VideoPlayer> {
                         ),
                       ).animate().fade(),
                     ),
+                    DanmakuScreen(
+            createdController: (e) {
+                _controller = e;
+            },
+            option: DanmakuOption(),
+            ),
                 ],
               ),
             ),

@@ -5,17 +5,22 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 
+import 'package:canvas_danmaku/canvas_danmaku.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:miru_app/data/providers/anilist_provider.dart';
 import 'package:miru_app/data/providers/bt_server_provider.dart';
+import 'package:miru_app/models/danmaku_module.dart';
 import 'package:miru_app/models/index.dart';
+import 'package:miru_app/request/danmaku.dart';
+import 'package:miru_app/utils/logger.dart';
 import 'package:miru_app/utils/request.dart';
 import 'package:miru_app/views/dialogs/bt_dialog.dart';
 import 'package:miru_app/controllers/home_controller.dart';
@@ -42,6 +47,14 @@ class VideoPlayerController extends GetxController {
   final int episodeGroupId;
   final ExtensionService runtime;
   final String anilistID;
+  
+  int bangumiID = 0;
+
+  late DanmakuController danmakuController;
+  // 弹幕开关
+  bool danmakuOn = true;
+
+  Map<int, List<Danmaku>> danDanmakus = {};
 
   VideoPlayerController({
     required this.title,
@@ -80,6 +93,12 @@ class VideoPlayerController extends GetxController {
   final ReceivePort qualityRereceivePort = ReceivePort();
   Isolate? qualityReceiver;
   // 复制当前 context
+  // 弹幕
+  late double danmakuArea;
+  late bool _danmakuColor;
+  late bool _danmakuBiliBiliSource;
+  late bool _danmakuGamerSource;
+  late bool _danmakuDanDanSource;
 
   @override
   void onInit() async {
@@ -98,7 +117,7 @@ class VideoPlayerController extends GetxController {
           .setProperty('demuxer-max-bytes', '30MiB');
     }
     play();
-
+    getDanDanmaku(title, playIndex);
     // 切换剧集
     ever(index, (callback) {
       play();
@@ -508,6 +527,70 @@ class VideoPlayerController extends GetxController {
     }
 
     super.onClose();
+  }
+  getPlayerTimer() {
+    return Timer.periodic(const Duration(seconds: 1), (timer) {
+      // 弹幕相关
+      if (player.state.playing == true) {
+        // debugPrint('当前播放到 ${videoController.currentPosition.inSeconds}');
+        danDanmakus[player.state.position.inSeconds]
+            ?.asMap()
+            .forEach((idx, danmaku) async {
+          if (!_danmakuColor) {
+            danmaku.color = Colors.white;
+          }
+          if (!_danmakuBiliBiliSource && danmaku.source.contains('BiliBili')) {
+            return;
+          }
+          if (!_danmakuGamerSource && danmaku.source.contains('Gamer')) {
+            return;
+          }
+          if (!_danmakuDanDanSource &&
+              !(danmaku.source.contains('BiliBili') ||
+                  danmaku.source.contains('Gamer'))) {
+            return;
+          }
+          await Future.delayed(
+              Duration(
+                  milliseconds: idx *
+                      1000 ~/
+                      danDanmakus[
+                              player.state.position.inSeconds]!
+                          .length),
+              () =>  player.state.playing &&
+                      !player.state.buffering
+                  ? danmakuController.addDanmaku(DanmakuContentItem(
+                      danmaku.message,
+                      color: danmaku.color,
+                      type: danmaku.type == 4
+                          ? DanmakuItemType.bottom
+                          : (danmaku.type == 5
+                              ? DanmakuItemType.top
+                              : DanmakuItemType.scroll)))
+                  : null);
+        });
+      }
+    });
+  }
+  Future getDanDanmaku(String title, int episode) async {
+    KazumiLogger().log(Level.info, '尝试获取弹幕 $title');
+    try {
+      danDanmakus.clear();
+      bangumiID = await DanmakuRequest.getBangumiID(title);
+      var res = await DanmakuRequest.getDanDanmaku(bangumiID, episode);
+      addDanmakus(res);
+    } catch (e) {
+      KazumiLogger().log(Level.warning, '获取弹幕错误 ${e.toString()}');
+    }
+  }
+
+  void addDanmakus(List<Danmaku> danmakus) {
+    for (var element in danmakus) {
+      var danmakuList =
+          danDanmakus[element.time.toInt()] ?? List.empty(growable: true);
+      danmakuList.add(element);
+      danDanmakus[element.time.toInt()] = danmakuList;
+    }
   }
 }
 
