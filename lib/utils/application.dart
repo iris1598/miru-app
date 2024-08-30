@@ -17,7 +17,6 @@ import 'package:device_info_plus/device_info_plus.dart';
 late PackageInfo packageInfo;
 late AndroidDeviceInfo androidDeviceInfo;
 late WindowsDeviceInfo windowsDeviceInfo;
-late LinuxDeviceInfo linuxDeviceInfo;
 
 class ApplicationUtils {
   static Future ensureInitialized() async {
@@ -25,11 +24,6 @@ class ApplicationUtils {
     final deviceInfo = DeviceInfoPlugin();
     if (Platform.isAndroid) {
       androidDeviceInfo = await deviceInfo.androidInfo;
-      return packageInfo;
-    }
-    if (Platform.isLinux) {
-      linuxDeviceInfo = await deviceInfo.linuxInfo;
-      return packageInfo;
     }
     if (Platform.isWindows) {
       windowsDeviceInfo = await deviceInfo.windowsInfo;

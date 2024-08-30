@@ -84,6 +84,7 @@
     "about": "जानकारी"
   },
   "external-player-launching": "{player} को चालना",
+
   "detail": {
     "favorite": "पसंदीदा",
     "favorited": "पसंदीदा",
@@ -132,6 +133,7 @@
     "error": "अपडेट की जाँच में विफलता, नेटवर्क त्रुटि हुई"
   },
   "extension-install-error": "एक्सटेंशन स्थापित करने में विफलता",
+
   "extension-type": {
     "video": "वीडियो",
     "novel": "नॉवल",
@@ -143,7 +145,7 @@
     "version": "संस्करण",
     "language": "भाषा",
     "original-site": "मूल साइट",
-    "other-information": "अन्य जानकारी",
+    "other-infomation": "अन्य जानकारी",
     "license": "लाइसेंस",
     "title": "एक्सटेंशन जानकारी"
   },

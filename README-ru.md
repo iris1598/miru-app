@@ -1,21 +1,23 @@
-[English](README.md) | [简体中文](README-zh.md) | [日本語](README-ja.md) | [うちなーぐち](README-ryu.md) | **Русский** | [Беларуская](README-be.md) | [Українська](README-uk.md)
+[简体中文](README-zh.md) | [日本語](README-ja.md) | [うちなーぐち](README-ryu.md) | [English](README.md) | [Беларуская](README-be.md) | [Українська](README-uk.md)
 
-<div align="center">
-  <img width="300" src="./assets/icon/logo.png" alt="Miru 看板娘"/>
-</div>
+<p align="center">
+<img width="300" src="./assets/icon/logo.png" alt="Miru 看板娘"/>
+</p>
 
-<h1 align="center">Miru App</h1>
+<h1 align="center">
+Miru App
+</h1>
 
 <p align="center">Бесплатное многофункциональное приложение с открытым исходным кодом, поддерживающее видео, комиксы и новеллы, благодаря расширениям. Работает на Android, Windows, Web.</p>
 
-<div align="center">
+<h1 align="center">
 
 [![GitHub release (with filter)](https://img.shields.io/github/v/release/miru-project/miru-app)](https://github.com/miru-project/miru-app/releases/latest)
 [![License](https://img.shields.io/github/license/miru-project/miru-app)](https://github.com/miru-project/miru-app/blob/main/LICENSE)
 [![Stars](https://img.shields.io/github/stars/miru-project/miru-app)](https://github.com/miru-project/miru-app/stargazers)
 [![GitHub all releases](https://img.shields.io/github/downloads/miru-project/miru-app/total)](https://github.com/miru-project/miru-app/releases/latest)
 
-</div>
+</h1>
 
 ![screenshot](assets/screenshot/screenshot.webp)
 
@@ -33,13 +35,13 @@
 ## Список задач
 
 - [x] BT торрент
-- [x] Улучшенные инструменты отладки
+- [ ] Улучшенные инструменты отладки
 - [ ] Синхронизация данных
 - [ ] Автоматический поиск субтитров
 
 ## Установка
 
-Вы можете перейти в [Release](https://github.com/miru-project/miru-app/releases/latest), чтобы скачать последнюю версию установочного пакета или собрать самостоятельно следующим методом
+Вы можете перейти в [Release](https://github.com/miru-project/miru-app/releases/latest) , чтобы скачать последнюю версию установочного пакета или собрать самостоятельно следующим методом
 
 ## Сборка
 
@@ -86,6 +88,9 @@ flutter build windows
 - Изменение кода
 - Написание документации
 
+
 ## Дополнительные ссылки
 
-Telegram: <https://t.me/MiruChat>
+Telegram: https://t.me/MiruChat
+
+Telegram channel: https://t.me/MiruChannel

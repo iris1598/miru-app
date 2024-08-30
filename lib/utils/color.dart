@@ -19,16 +19,4 @@ class ColorUtils {
     ][colorIndex];
     return color!;
   }
-
-  static List<Color> baseColors = [
-    Colors.white,
-    Colors.black,
-    Colors.red,
-    Colors.orange,
-    Colors.yellow,
-    Colors.green,
-    Colors.cyan,
-    Colors.blue,
-    Colors.purple,
-  ];
 }

@@ -22,75 +22,73 @@ import 'package:miru_app/views/widgets/platform_widget.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main(List<String> args) async {
-  runZonedGuarded(() async {
-    FlutterError.onError = (FlutterErrorDetails details) {
-      logger.severe("", details.exception, details.stack);
+  FlutterError.onError = (FlutterErrorDetails details) {
+    logger.severe("", details.exception, details.stack);
+  };
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // 多窗口
+  if (args.firstOrNull == 'multi_window') {
+    final windowId = int.parse(args[1]);
+    final arguments = args[2].isEmpty
+        ? const {}
+        : jsonDecode(args[2]) as Map<String, dynamic>;
+
+    Map windows = {
+      "debug": ExtensionDebugWindow(
+        windowController: WindowController.fromWindowId(windowId),
+      ),
     };
+    runApp(windows[arguments["name"]]);
+    return;
+  }
 
-    WidgetsFlutterBinding.ensureInitialized();
+  // 主窗口
+  await MiruDirectory.ensureInitialized();
+  await MiruStorage.ensureInitialized();
+  MiruLog.ensureInitialized();
+  await ApplicationUtils.ensureInitialized();
+  await MiruRequest.ensureInitialized();
+  ExtensionUtils.ensureInitialized();
+  MediaKit.ensureInitialized();
 
-    // 多窗口
-    if (args.firstOrNull == 'multi_window') {
-      final windowId = int.parse(args[1]);
-      final arguments = args[2].isEmpty
-          ? const {}
-          : jsonDecode(args[2]) as Map<String, dynamic>;
+  if (!Platform.isAndroid) {
+    await windowManager.ensureInitialized();
+    final sizeArr = MiruStorage.getSetting(SettingKey.windowSize).split(",");
+    final size = Size(double.parse(sizeArr[0]), double.parse(sizeArr[1]));
+    WindowOptions windowOptions = WindowOptions(
+      size: size,
+      center: true,
+      minimumSize: const Size(600, 500),
+      skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.hidden,
+    );
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      final position = MiruStorage.getSetting(SettingKey.windowPosition);
+      if (position != null) {
+        final offsetArr = position.split(",");
+        final offset = Offset(
+          double.parse(offsetArr[0]),
+          double.parse(offsetArr[1]),
+        );
+        await windowManager.setPosition(
+          offset,
+        );
+      }
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
 
-      Map windows = {
-        "debug": ExtensionDebugWindow(
-          windowController: WindowController.fromWindowId(windowId),
-        ),
-      };
-      runApp(windows[arguments["name"]]);
-      return;
-    }
-
-    // 主窗口
-    await MiruDirectory.ensureInitialized();
-    await MiruStorage.ensureInitialized();
-    MiruLog.ensureInitialized();
-    await ApplicationUtils.ensureInitialized();
-    await MiruRequest.ensureInitialized();
-    ExtensionUtils.ensureInitialized();
-    MediaKit.ensureInitialized();
-
-    if (!Platform.isAndroid) {
-      await windowManager.ensureInitialized();
-      final sizeArr = MiruStorage.getSetting(SettingKey.windowSize).split(",");
-      final size = Size(double.parse(sizeArr[0]), double.parse(sizeArr[1]));
-      WindowOptions windowOptions = WindowOptions(
-        size: size,
-        center: true,
-        skipTaskbar: false,
-        titleBarStyle: TitleBarStyle.hidden,
-      );
-      windowManager.waitUntilReadyToShow(windowOptions, () async {
-        final position = MiruStorage.getSetting(SettingKey.windowPosition);
-        if (position != null) {
-          final offsetArr = position.split(",");
-          final offset = Offset(
-            double.parse(offsetArr[0]),
-            double.parse(offsetArr[1]),
-          );
-          await windowManager.setPosition(
-            offset,
-          );
-        }
-        await windowManager.show();
-        await windowManager.focus();
-      });
-    }
-
-    if (Platform.isAndroid) {
-      SystemUiOverlayStyle style = const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-      );
-      SystemChrome.setSystemUIOverlayStyle(style);
-    }
-
-    runApp(const MainApp());
-  }, (error, stack) {
+  if (Platform.isAndroid) {
+    SystemUiOverlayStyle style = const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+    );
+    SystemChrome.setSystemUIOverlayStyle(style);
+  }
+  runZonedGuarded(() => runApp(const MainApp()), (error, stack) {
     logger.severe("", error, stack);
   });
 }

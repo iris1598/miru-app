@@ -4,16 +4,13 @@
     "en": "English",
     "es": "Español",
     "fr": "Français",
-    "hu": "Magyar",
-    "hi": "हिंदी",
-    "id": "Indonesia",
     "ja": "日本語",
-    "pl": "Polski",
     "ru": "Русский",
     "ryu": "うちなーぐち",
     "uk": "Українська",
     "zh": "中文",
-    "zhHant": "繁體中文"
+    "zhHant": "繁體中文",
+    "hi": "हिंदी"
   },
   "common": {
     "anime": "Anime",
@@ -48,17 +45,14 @@
     "login": "Login",
     "no-data": "No data",
     "clear": "Clear",
-    "export": "Export",
-    "off": "Off",
-    "error-message": "Error message",
-    "disconnect": "Disconnect"
+    "export": "Export"
   },
   "home": {
     "continue-watching": "Continue",
     "favorite": "Favorite",
     "no-record": "No favorites or viewing records",
     "watched": "Watched {ep}",
-    "favorite-all": "All {type} favorites"
+    "favorite-all": "All {type} favourites"
   },
   "search": {
     "hint-text": "Please use search wisely!~",
@@ -69,10 +63,9 @@
     "import": {
       "title": "Import Extension",
       "url-label": "Extension URL",
-      "tips": "You can import extensions through a link, or click on the extension directory below and place the extension file there.",
+      "tips": "You can import extensions through a link,or click on the extension directory below and place the extension file there.",
       "extension-dir": "Extension Directory",
-      "import-by-url": "Import by URL",
-      "import-by-local": "Import Locally"
+      "import-by-url": "Import by URL"
     },
     "error-dialog": "Error Message",
     "installed": "Installed",
@@ -128,7 +121,7 @@
     "extension-log": "Extension Log Window",
     "extension-log-subtitle": "Used for debugging extensions",
     "skip-interval": "Skip Interval",
-    "skip-interval-subtitle": "Skipping interval for built-in video player",
+    "skip-interval-subtitle": "Skipping interval for builtin video player",
     "default-reader-mode": "Default reader mode",
     "network": "Network",
     "network-subtitle": "Proxy, User-Agent...",
@@ -175,12 +168,8 @@
     "subtitle-none": "No Subtitle",
     "subtitle": "Subtitle",
     "subtitle-change": "Change Subtitle {title}",
-    "subtitle-file": "Add subtitle File",
+    "subtitle-file": "Subtitle File",
     "torrent-downloading": "Torrent downloading",
-    "no-qualities": "No quality available",
-    "audio": "Audio",
-    "getting-streamlink": "Getting streamlink...",
-    "streamlink-error": "Failed to get streamlink",
     "tooltip": {
       "close": "Close",
       "subtitle": "Subtitle",
@@ -194,34 +183,6 @@
       "full-screen": "Full Screen",
       "volume": "Volume",
       "torrent-file-list": "Torrent file list"
-    },
-    "cast": "Cast to device",
-    "cast-device": "playing on {device}",
-    "sidebar": {
-      "tab": {
-        "episodes": "Episodes",
-        "qualitys": "Qualitys",
-        "torrentFiles": "Torrent Files",
-        "tracks": "Tracks",
-        "settings": "Settings"
-      },
-      "subtitle": {
-        "title": "Subtitle",
-        "font-size": "Font size",
-        "font-color": "Font color",
-        "background-color": "Background color",
-        "background-opacity": "Background opacity",
-        "text-align": "Text align",
-        "font-weight": "Font weight",
-        "font-weight-normal": "Normal",
-        "font-weight-bold": "Bold"
-      },
-      "play-mode": {
-        "title": "Play mode",
-        "loop": "Loop",
-        "single": "Single",
-        "auto-next": "Auto next"
-      }
     }
   },
   "comic-settings": {
@@ -263,13 +224,13 @@
     "version": "Version",
     "language": "Language",
     "original-site": "Original Site",
-    "other-information": "Other Information",
+    "other-infomation": "Other Infomation",
     "license": "License",
     "title": "Extension Info"
   },
   "cookie-clean": {
     "title": "Cookie Clean",
-    "subtitle": "You may need to log in again after the clean-up",
+    "subtitle": "You may need to log in again after the cleanup",
     "success": "Clean success",
     "clean": "Clean"
   },
@@ -294,19 +255,19 @@
   },
   "report": {
     "copied": "Copied to clipboard",
-    "github-bug-report": "Report to GitHub issue",
+    "github-bug-report": "Report to Github issue",
     "title": "Bug Report",
     "copy-message": "Copy error message",
     "show-report-checkbox": "Show report dialog when app starts"
   },
   "anilist": {
-    "title": "AniList Tracking",
-    "login-hint-1": "Seems you haven't logged into AniList yet",
-    "login-hint-2": "Please log into AniList first",
+    "title": "Anilist Tracking",
+    "login-hint-1": "Seems you haven't login into AniList yet",
+    "login-hint-2": "Please login into AniList first",
     "status": "Status",
     "score": "Score",
     "watching": "Watching",
-    "reading": "Reading",
+    "reading": "reading",
     "completed": "Completed",
     "paused": "Paused",
     "dropped": "Dropped",
@@ -318,7 +279,7 @@
     "end-date": "End Date",
     "unbind": "Unbind",
     "episodes": "Episodes",
-    "manga-chapter-read": "Manga Chapter Read: {chapters}",
+    "manga-chaper-read": "Manga Chaper Read: {chapters}",
     "anime-episode-watch": "Anime Episode Watched: {episodes}"
   }
 }

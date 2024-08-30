@@ -72,9 +72,7 @@ class _ExtensionSettingsPageState extends State<ExtensionSettingsPage> {
               setState(() {});
             }
           },
-          buildText: () {
-            return setting.value ?? setting.defaultValue;
-          },
+          text: setting.value ?? setting.defaultValue,
           buildSubtitle: () {
             if (Platform.isAndroid) {
               return '${setting.value ?? setting.defaultValue}\n${setting.description ?? ''}';
@@ -375,7 +373,7 @@ class _ExtensionSettingsPageState extends State<ExtensionSettingsPage> {
                           const SizedBox(height: 16),
                         ],
                         CardTile(
-                          title: 'extension-info.other-information'.i18n,
+                          title: 'extension-info.other-infomation'.i18n,
                           child: Wrap(
                             children: [
                               InfoCard(

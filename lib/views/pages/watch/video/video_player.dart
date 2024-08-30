@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import 'package:miru_app/models/danmaku_module.dart';
+import 'package:mobx/mobx.dart';
+
 import 'package:miru_app/models/extension.dart';
 import 'package:miru_app/controllers/watch/video_controller.dart';
-import 'package:miru_app/views/pages/watch/video/video_player_sidebar.dart';
+import 'package:miru_app/views/widgets/watch/playlist.dart';
 import 'package:miru_app/views/pages/watch/video/video_player_content.dart';
 import 'package:miru_app/data/services/extension_service.dart';
 import 'package:miru_app/views/widgets/platform_widget.dart';
+import 'package:canvas_danmaku/canvas_danmaku.dart';
 
 class VideoPlayer extends StatefulWidget {
   const VideoPlayer({
@@ -34,6 +38,9 @@ class VideoPlayer extends StatefulWidget {
 
 class _VideoPlayerState extends State<VideoPlayer> {
   late VideoPlayerController _c;
+  late DanmakuController _controller;
+  @observable
+  Map<int, List<Danmaku>> danDanmakus = {};
 
   @override
   void initState() {
@@ -54,6 +61,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
 
   @override
   void dispose() {
+    _c.player.dispose();
     Get.delete<VideoPlayerController>(tag: widget.title);
     super.dispose();
   }
@@ -61,55 +69,72 @@ class _VideoPlayerState extends State<VideoPlayer> {
   _buildContent() {
     return Obx(() {
       final maxWidth = MediaQuery.of(context).size.width;
-      return Row(
-        children: [
-          AnimatedContainer(
-            onEnd: () {
-              _c.isOpenSidebar.value = _c.showSidebar.value;
+      return PopScope(
+        onPopInvoked: (_) async {
+          await _c.onExit();
+        },
+        child: Row(
+          children: [
+            AnimatedContainer(
+              onEnd: () {
+                _c.isOpenSidebar.value = _c.showPlayList.value;
+              },
+              width: _c.showPlayList.value
+                  ? MediaQuery.of(context).size.width - 300
+                  : maxWidth,
+              duration: const Duration(milliseconds: 120),
+              child: Stack(
+                children: [
+                  VideoPlayerConten(tag: widget.title),
+                  // 消息弹出
+                  if (_c.cuurentMessageWidget.value != null)
+                    Positioned(
+                      left: 0,
+                      bottom: 100,
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.5),
+                          borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                          ),
+                        ),
+                        constraints: BoxConstraints(
+                          maxHeight: 200,
+                          maxWidth: maxWidth,
+                        ),
+                        child: DefaultTextStyle(
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                          child: _c.cuurentMessageWidget.value!,
+                        ),
+                      ).animate().fade(),
+                    ),
+                    DanmakuScreen(
+            createdController: (e) {
+                _controller = e;
             },
-            width: _c.showSidebar.value
-                ? MediaQuery.of(context).size.width - 300
-                : maxWidth,
-            duration: const Duration(milliseconds: 120),
-            child: Stack(
-              children: [
-                VideoPlayerConten(tag: widget.title),
-                // 消息弹出
-                if (_c.cuurentMessageWidget.value != null)
-                  Positioned(
-                    left: 0,
-                    bottom: 100,
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.5),
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
-                      ),
-                      constraints: BoxConstraints(
-                        maxHeight: 200,
-                        maxWidth: maxWidth,
-                      ),
-                      child: DefaultTextStyle(
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        child: _c.cuurentMessageWidget.value!,
-                      ),
-                    ).animate().fade(),
-                  ),
-              ],
+            option: DanmakuOption(),
             ),
-          ),
-          if (_c.isOpenSidebar.value)
-            Expanded(
-              child: VideoPlayerSidebar(
-                controller: _c,
+                ],
               ),
-            )
-        ],
+            ),
+            if (_c.isOpenSidebar.value)
+              Expanded(
+                child: PlayList(
+                  selectIndex: _c.index.value,
+                  list: widget.playList.map((e) => e.name).toList(),
+                  title: widget.title,
+                  onChange: (value) {
+                    _c.index.value = value;
+                    _c.showPlayList.value = false;
+                  },
+                ),
+              )
+          ],
+        ),
       );
     });
   }
@@ -117,10 +142,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
   @override
   Widget build(BuildContext context) {
     return PlatformBuildWidget(
-      androidBuilder: (context) => Theme(
-        data: ThemeData.dark(useMaterial3: true),
-        child: Scaffold(body: _buildContent()),
-      ),
+      androidBuilder: (context) => Scaffold(body: _buildContent()),
       desktopBuilder: ((context) => _buildContent()),
     );
   }

@@ -84,27 +84,22 @@ class _SettingsPageState extends State<SettingsPage> {
                   defaultLanguage: MiruStorage.getSetting(SettingKey.language),
                 );
               },
-              buildText: () {
-                return MiruStorage.getSetting(SettingKey.tmdbKey);
-              },
+              text: MiruStorage.getSetting(SettingKey.tmdbKey),
             ),
             // 语言设置
             SettingsRadiosTile(
               title: 'settings.language'.i18n,
               itemNameValue: {
-                'languages.be'.i18n: 'be',
                 'languages.en'.i18n: 'en',
+                'languages.zh'.i18n: 'zh',
+                'languages.be'.i18n: 'be',
                 'languages.es'.i18n: 'es',
                 'languages.fr'.i18n: 'fr',
-                'languages.hu'.i18n: 'hu',
-                'languages.hi'.i18n: 'hi',
-                'languages.id'.i18n: 'id',
                 'languages.ja'.i18n: 'ja',
-                'languages.pl'.i18n: 'pl',
-                'languages.ru'.i18n: 'ru',
                 'languages.ryu'.i18n: 'ryu',
+                'languages.ru'.i18n: 'ru',
                 'languages.uk'.i18n: 'uk',
-                'languages.zh'.i18n: 'zh',
+                'languages.hi'.i18n: 'hi',
                 'languages.zhHant'.i18n: 'zhHant',
               },
               buildSubtitle: () => 'settings.language-subtitle'.i18n,
@@ -183,9 +178,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 MiruStorage.setSetting(SettingKey.miruRepoUrl, value);
                 Get.find<ExtensionRepoPageController>().onRefresh();
               },
-              buildText: () {
-                return MiruStorage.getSetting(SettingKey.miruRepoUrl);
-              },
+              text: MiruStorage.getSetting(SettingKey.miruRepoUrl),
             ),
             const SizedBox(height: 8),
           ],
@@ -233,13 +226,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     "settings.external-player-builtin".i18n: "built-in",
                     "VLC": "vlc",
                     "Other": "other",
-                  };
-                }
-                if (Platform.isLinux) {
-                  return {
-                    "settings.external-player-builtin".i18n: "built-in",
-                    "VLC": "vlc",
-                    "mpv": "mpv",
                   };
                 }
                 return {
@@ -435,9 +421,7 @@ class _SettingsPageState extends State<SettingsPage> {
               onChanged: (value) {
                 MiruStorage.setUASetting(value);
               },
-              buildText: () {
-                return MiruStorage.getUASetting();
-              },
+              text: MiruStorage.getUASetting(),
             ),
             SettingsRadiosTile(
               title: 'settings.proxy-type'.i18n,
@@ -464,9 +448,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 MiruStorage.setSetting(SettingKey.proxy, value);
                 MiruRequest.refreshProxy();
               },
-              buildText: () {
-                return MiruStorage.getSetting(SettingKey.proxy);
-              },
+              text: MiruStorage.getSetting(SettingKey.proxy),
             ),
           ],
         ),

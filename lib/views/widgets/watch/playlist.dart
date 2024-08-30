@@ -38,20 +38,23 @@ class PlayList extends fluent.StatelessWidget {
   }
 
   Widget _buildDesktop(BuildContext context) {
-    return ScrollablePositionedList.builder(
-      itemCount: list.length,
-      initialScrollIndex: selectIndex,
-      padding: const EdgeInsets.all(8),
-      itemBuilder: (context, index) {
-        final contact = list[index];
-        return fluent.ListTile.selectable(
-          title: Text(contact),
-          onPressed: () {
-            onChange(index);
-          },
-          selected: list[selectIndex] == contact,
-        );
-      },
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: fluent.FluentTheme.of(context).micaBackgroundColor,
+      child: ScrollablePositionedList.builder(
+        itemCount: list.length,
+        initialScrollIndex: selectIndex,
+        itemBuilder: (context, index) {
+          final contact = list[index];
+          return fluent.ListTile.selectable(
+            title: Text(contact),
+            selected: list[selectIndex] == contact,
+            onSelectionChange: (value) {
+              onChange(index);
+            },
+          );
+        },
+      ),
     );
   }
 

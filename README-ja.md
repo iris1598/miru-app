@@ -1,21 +1,23 @@
-[English](README.md) | [简体中文](README-zh.md) | **日本語** | [うちなーぐち](README-ryu.md) | [Русский](README-ru.md) | [Беларуская](README-be.md) | [Українська](README-uk.md)
+[简体中文](README-zh.md) | [English](README.md) | [うちなーぐち](README-ryu.md) | [Русский](README-ru.md) | [Беларуская](README-be.md) | [Українська](README-uk.md)
 
-<div align="center">
-  <img width="300" src="./assets/icon/logo.png" alt="Miru 看板娘"/>
-</div>
+<p align="center">
+<img width="300" src="./assets/icon/logo.png" alt="Miru 看板娘"/>
+</p>
 
-<h1 align="center">Miru App</h1>
+<h1 align="center">
+Miru App
+</h1>
 
 <p align="center">動画、漫画、小説の拡張ソースをサポートし、Android、Windows、Webに対応した無料のオープンソースの多機能アプリケーション。</p>
 
-<div align="center">
+<h1 align="center">
 
 [![GitHub release (with filter)](https://img.shields.io/github/v/release/miru-project/miru-app)](https://github.com/miru-project/miru-app/releases/latest)
 [![License](https://img.shields.io/github/license/miru-project/miru-app)](https://github.com/miru-project/miru-app/blob/main/LICENSE)
 [![Stars](https://img.shields.io/github/stars/miru-project/miru-app)](https://github.com/miru-project/miru-app/stargazers)
 [![GitHub all releases](https://img.shields.io/github/downloads/miru-project/miru-app/total)](https://github.com/miru-project/miru-app/releases/latest)
 
-</div>
+</h1>
 
 ![screenshot](assets/screenshot/screenshot.webp)
 
@@ -33,13 +35,13 @@
 ## Todo
 
 - [x] BTトレント
-- [x] より良いデバッグツール
+- [ ] より良いデバッグツール
 - [ ] データの同期
 - [ ] 字幕の自動検索
 
 ## インストール
 
-そのためには、[ここから](https://github.com/miru-project/miru-app/releases/latest)最新版のインストールパッケージをダウンロードするか、以下の方法でご自身でビルドしてください
+そのためには、[ここから](https://github.com/miru-project/miru-app/releases/latest)最新版のインストールパッケージをダウンロードするか、以下の方法でご自身でビルドしてください 
 
 ## 構築
 
@@ -77,6 +79,7 @@ flutter build windows
 
 現時点ではLinuxでは依存関係の問題によりquickjsを起動できないため、当面の間サポート対象外となります。
 
+
 ## 貢献
 
 以下を含む、あらゆる種類の貢献を歓迎します。
@@ -86,6 +89,9 @@ flutter build windows
 - コード
 - 文書作成
 
+
 ## コミュニケーション
 
-Telegram: <https://t.me/MiruChat>
+Telegram：https://t.me/MiruChat
+
+Telegramチャンネル：https://t.me/MiruChannel

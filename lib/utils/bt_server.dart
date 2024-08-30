@@ -7,7 +7,6 @@ import 'package:miru_app/data/providers/bt_server_provider.dart';
 import 'package:miru_app/controllers/bt_dialog_controller.dart';
 import 'package:miru_app/controllers/main_controller.dart';
 import 'package:miru_app/utils/application.dart';
-import 'package:miru_app/utils/log.dart';
 import 'package:miru_app/utils/miru_directory.dart';
 import 'package:miru_app/utils/request.dart';
 import 'package:path/path.dart' as path;
@@ -33,7 +32,7 @@ class BTServerUtils {
     if (Platform.isAndroid) {
       final supportedAbis = androidDeviceInfo.supportedAbis;
       if (supportedAbis.contains("armeabi-v7a")) {
-        arch = "armv7a ";
+        arch = "arm";
       }
       if (supportedAbis.contains("x86_64")) {
         arch = "amd64";
@@ -47,21 +46,12 @@ class BTServerUtils {
       arch = "amd64.exe";
       platform = "windows";
     }
-    if (Platform.isLinux) {
-      platform = "linux";
-      final architecture = await Process.run('uname', ['-m']);
-      if (architecture.stdout.toString().contains("x86_64")) {
-        arch = "amd64";
-      }
-      if (architecture.stdout.toString().contains("arm64") ||
-          architecture.stdout.toString().contains("aarch64")) {
-        arch = "arm64";
-      }
-    }
 
     debugPrint("下载 bt-server $remoteVersion $platform $arch");
+
     final downloadUrl =
         "https://github.com/miru-project/bt-server/releases/download/$remoteVersion/bt-server-$remoteVersion-$platform-$arch";
+
     final savePath = MiruDirectory.getDirectory;
     await dio.download(
       downloadUrl,
@@ -97,7 +87,6 @@ class BTServerUtils {
           ["&"],
           workingDirectory: savePath,
         );
-        logger.info("bt-server started");
       }
     } catch (e) {
       final error = e.toString();

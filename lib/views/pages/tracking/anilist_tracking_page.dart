@@ -188,7 +188,7 @@ class _AniListTrackingPageState extends State<AniListTrackingPage> {
                           Text(
                             FlutterI18n.translate(
                               context,
-                              "anilist.manga-chapter-read",
+                              "anilist.manga-chaper-read",
                               translationParams: {
                                 "chapters": userData['MangaChapterRead']
                               },

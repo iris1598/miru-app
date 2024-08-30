@@ -34,7 +34,6 @@ showPlatformDialog({
   required String title,
   required Widget? content,
   required List<Widget>? actions,
-  double? maxWidth,
 }) {
   if (Platform.isAndroid) {
     return material.showDialog(
@@ -52,7 +51,6 @@ showPlatformDialog({
   return fluent.showDialog(
     context: context,
     builder: (context) => fluent.ContentDialog(
-      constraints: BoxConstraints(maxWidth: maxWidth ?? 368),
       title: Text(title),
       content: content,
       actions: actions,

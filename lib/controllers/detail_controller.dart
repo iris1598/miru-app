@@ -382,8 +382,7 @@ class DetailPageController extends GetxController {
             await launchMobileExternalPlayer(watchData.url, player);
             return;
           }
-          await launchDesktopExternalPlayer(watchData.url, player,
-              watchData.headers ?? {}, watchData.subtitles ?? []);
+          await launchDesktopExternalPlayer(watchData.url, player);
           return;
         } catch (e) {
           showPlatformSnackbar(
