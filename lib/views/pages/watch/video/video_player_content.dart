@@ -467,6 +467,31 @@ PopupMenuButton(
                     ];
                   },
                 ),
+                PopupMenuButton(
+  tooltip: "Toggle Danmaku",
+  icon: const Icon(
+    Icons.comment,
+    color: Colors.white,
+  ),
+  itemBuilder: (context) {
+    return [
+      PopupMenuItem(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+        child: Obx(() {
+          return CheckboxListTile(
+            value: _c.danmakuOn.value,
+            onChanged: (bool? value) {
+              if (value != null) {
+                _c.toggleDanmaku();
+              }
+            },
+            title: Text('Toggle Danmaku'),
+          );
+        }),
+      ),
+    ];
+  },
+),
                 Obx(() {
                   if (_c.currentQality.value.isEmpty) {
                     return const SizedBox.shrink();
