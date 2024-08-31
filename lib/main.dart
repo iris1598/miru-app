@@ -8,9 +8,12 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:miru_app/controllers/application_controller.dart';
+import 'package:miru_app/pages/error/storage_error_page.dart';
+import 'package:miru_app/request/request.dart';
 import 'package:miru_app/utils/log.dart';
 import 'package:miru_app/utils/miru_directory.dart';
 import 'package:miru_app/utils/request.dart';
+import 'package:miru_app/utils/storage.dart';
 import 'package:miru_app/views/pages/debug_page.dart';
 import 'package:miru_app/views/pages/main_page.dart';
 import 'package:miru_app/router/router.dart';
@@ -91,6 +94,18 @@ void main(List<String> args) async {
   runZonedGuarded(() => runApp(const MainApp()), (error, stack) {
     logger.severe("", error, stack);
   });
+  try {
+    await GStorage.init();
+  } catch (_) {
+    runApp(MaterialApp(
+        title: '初始化失败',
+        builder: (context, child) {
+          return const StorageErrorPage();
+        }));
+    return;
+  }
+  Request();
+  await Request.setCookie();
 }
 
 class MainApp extends StatefulWidget {

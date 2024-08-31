@@ -47,12 +47,13 @@ class VideoPlayerController extends GetxController {
   final int episodeGroupId;
   final ExtensionService runtime;
   final String anilistID;
-  
+
   int bangumiID = 0;
 
-  late DanmakuController danmakuController;
+ late final DanmakuController danmakuController;
   // 弹幕开关
-  bool danmakuOn = true;
+final danmakuOn = RxBool(true); // 默认值设置为 true
+
 
   Map<int, List<Danmaku>> danDanmakus = {};
 
@@ -65,7 +66,6 @@ class VideoPlayerController extends GetxController {
     required this.runtime,
     required this.anilistID,
   });
-
   final player = Player();
   late final videoController = VideoController(player);
   final showPlayList = false.obs;
@@ -99,9 +99,17 @@ class VideoPlayerController extends GetxController {
   late bool _danmakuBiliBiliSource;
   late bool _danmakuGamerSource;
   late bool _danmakuDanDanSource;
+void toggleDanmaku() {
+  danmakuOn.value = !danmakuOn.value;
+}
 
   @override
   void onInit() async {
+    _danmakuColor = false; // 假设这是您想要的默认值
+    _danmakuBiliBiliSource = true; // 假设这是您想要的默认值
+    _danmakuGamerSource = true; // 假设这是您想要的默认值
+    _danmakuDanDanSource = true; // 假设这是您想要的默认值
+    
     if (Platform.isAndroid) {
       // 切换到横屏
       SystemChrome.setPreferredOrientations(
@@ -117,12 +125,63 @@ class VideoPlayerController extends GetxController {
           .setProperty('demuxer-max-bytes', '30MiB');
     }
     play();
-    getDanDanmaku(title, playIndex);
+    getDanDanmaku(title,playIndex);
+    Timer getPlayerTimer() {
+    return Timer.periodic(const Duration(seconds: 1), (timer) {
+      // 弹幕相关
+      if (player.state.playing == true) {
+         debugPrint('当前播放到 ${player.state.position.inSeconds}');
+        danDanmakus[player.state.position.inSeconds]
+            ?.asMap()
+            .forEach((idx, danmaku) async {
+          if (!_danmakuColor) {
+            danmaku.color = Colors.white;
+          }
+          if (!_danmakuBiliBiliSource && danmaku.source.contains('BiliBili')) {
+            return;
+          }
+          if (!_danmakuGamerSource && danmaku.source.contains('Gamer')) {
+            return;
+          }
+          if (!_danmakuDanDanSource &&
+              !(danmaku.source.contains('BiliBili') ||
+                  danmaku.source.contains('Gamer'))) {
+            return;
+          }
+          debugPrint('Adding danmaku: ${danmaku.message}');
+          await Future.delayed(
+              Duration(
+                  milliseconds: idx *
+                      1000 ~/
+                      danDanmakus[
+                              player.state.position.inSeconds]!
+                          .length),
+              () =>  player.state.playing &&
+                      !player.state.buffering&&
+                      danmakuOn.value
+                  ? danmakuController.addDanmaku(DanmakuContentItem(
+                      danmaku.message,
+                      color: danmaku.color,
+                      type: danmaku.type == 4
+                          ? DanmakuItemType.bottom
+                          : (danmaku.type == 5
+                              ? DanmakuItemType.top
+                              : DanmakuItemType.scroll)))
+                  : null);
+        });
+      }
+    });
+  }
     // 切换剧集
     ever(index, (callback) {
       play();
     });
-
+// 播放状态监听，当开始播放时启动计时器
+  player.stream.playing.listen((playing) {
+    if (playing) {
+      getPlayerTimer();
+    }
+  });
     // 切换倍速
     ever(speed, (callback) {
       player.setRate(callback);
@@ -528,50 +587,7 @@ class VideoPlayerController extends GetxController {
 
     super.onClose();
   }
-  getPlayerTimer() {
-    return Timer.periodic(const Duration(seconds: 1), (timer) {
-      // 弹幕相关
-      if (player.state.playing == true) {
-        // debugPrint('当前播放到 ${videoController.currentPosition.inSeconds}');
-        danDanmakus[player.state.position.inSeconds]
-            ?.asMap()
-            .forEach((idx, danmaku) async {
-          if (!_danmakuColor) {
-            danmaku.color = Colors.white;
-          }
-          if (!_danmakuBiliBiliSource && danmaku.source.contains('BiliBili')) {
-            return;
-          }
-          if (!_danmakuGamerSource && danmaku.source.contains('Gamer')) {
-            return;
-          }
-          if (!_danmakuDanDanSource &&
-              !(danmaku.source.contains('BiliBili') ||
-                  danmaku.source.contains('Gamer'))) {
-            return;
-          }
-          await Future.delayed(
-              Duration(
-                  milliseconds: idx *
-                      1000 ~/
-                      danDanmakus[
-                              player.state.position.inSeconds]!
-                          .length),
-              () =>  player.state.playing &&
-                      !player.state.buffering
-                  ? danmakuController.addDanmaku(DanmakuContentItem(
-                      danmaku.message,
-                      color: danmaku.color,
-                      type: danmaku.type == 4
-                          ? DanmakuItemType.bottom
-                          : (danmaku.type == 5
-                              ? DanmakuItemType.top
-                              : DanmakuItemType.scroll)))
-                  : null);
-        });
-      }
-    });
-  }
+  
   Future getDanDanmaku(String title, int episode) async {
     KazumiLogger().log(Level.info, '尝试获取弹幕 $title');
     try {

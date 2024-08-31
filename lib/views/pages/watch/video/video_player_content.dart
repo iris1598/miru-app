@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:canvas_danmaku/canvas_danmaku.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:media_kit_video/media_kit_video.dart';
@@ -22,7 +23,7 @@ class VideoPlayerConten extends StatefulWidget {
 
 class _VideoPlayerContenState extends State<VideoPlayerConten> {
   late final _c = Get.find<VideoPlayerController>(tag: widget.tag);
-
+  late final DanmakuController danmakuController;
   final speeds = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
   late final topButtonBar = Row(
     children: [
@@ -239,6 +240,31 @@ class _VideoPlayerContenState extends State<VideoPlayerConten> {
                     ];
                   },
                 ),
+PopupMenuButton(
+  tooltip: "Toggle Danmaku",
+  icon: const Icon(
+    Icons.comment,
+    color: Colors.white,
+  ),
+  itemBuilder: (context) {
+    return [
+      PopupMenuItem(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+        child: Obx(() {
+          return CheckboxListTile(
+            value: _c.danmakuOn.value,
+            onChanged: (bool? value) {
+              if (value != null) {
+                _c.toggleDanmaku();
+              }
+            },
+            title: Text('Toggle Danmaku'),
+          );
+        }),
+      ),
+    ];
+  },
+),
                 Obx(() {
                   if (_c.currentQality.value.isEmpty) {
                     return const SizedBox.shrink();
@@ -487,11 +513,26 @@ class _VideoPlayerContenState extends State<VideoPlayerConten> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return PlatformBuildWidget(
-      androidBuilder: _buildAndroid,
-      desktopBuilder: _buildDesktop,
-    );
-  }
+@override
+Widget build(BuildContext context) {
+  return PlatformBuildWidget(
+    androidBuilder: (context) => _buildWithDanmaku(context, _buildAndroid),
+    desktopBuilder: (context) => _buildWithDanmaku(context, _buildDesktop),
+  );
+}
+
+Widget _buildWithDanmaku(BuildContext context, Widget Function(BuildContext) builder) {
+  return Stack(
+    children: [
+      builder(context), // This is the video player widget
+      DanmakuScreen(
+        createdController: (e) {
+          danmakuController = e;
+          Get.find<VideoPlayerController>(tag: widget.tag).danmakuController = danmakuController;
+        },
+        option: DanmakuOption(),
+      ),
+    ],
+  );
+}
 }
