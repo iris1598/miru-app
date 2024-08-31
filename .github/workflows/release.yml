@@ -38,7 +38,7 @@ jobs:
       - name: Flutter action
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 3.16.8
+          flutter-version: 3.24.1
           channel: stable
       - name: Decode keystore
         run: |
@@ -125,7 +125,7 @@ jobs:
           ref: main
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: 3.16.8
+          flutter-version: 3.24.1
           channel: stable
       - name: Install project dependencies
         run: flutter pub get
