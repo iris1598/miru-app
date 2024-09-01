@@ -101,6 +101,7 @@ final danmakuOn = RxBool(true); // 默认值设置为 true
   late bool _danmakuDanDanSource;
 void toggleDanmaku() {
   danmakuOn.value = !danmakuOn.value;
+  danmakuController.clear();
 }
 
   @override
@@ -179,7 +180,11 @@ void toggleDanmaku() {
 // 播放状态监听，当开始播放时启动计时器
   player.stream.playing.listen((playing) {
     if (playing) {
+      danmakuController.resume();
       getPlayerTimer();
+    }
+    else{
+      danmakuController.pause();
     }
   });
     // 切换倍速

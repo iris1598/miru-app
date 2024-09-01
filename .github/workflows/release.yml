@@ -38,7 +38,7 @@ jobs:
       - name: Flutter action
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 3.24.1
+          flutter-version: 3.16.8
           channel: stable
       - name: Decode keystore
         run: |
@@ -49,7 +49,7 @@ jobs:
       - run: flutter pub get
       # 打包apk
       - name: Collect Apks
-        run: flutter build apk --debug --split-per-abi -v
+        run: flutter build apk --release --split-per-abi -v
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
@@ -59,8 +59,18 @@ jobs:
       - name: Upload Artifact - armeabi-v7a
         uses: actions/upload-artifact@v3
         with:
-          path: "build/app/outputs/flutter-apk/app-debug.apk"
-          name: Miru-${{github.ref_name}}-debug.apk
+          path: "build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk"
+          name: Miru-${{github.ref_name}}-armeabi-v7a.apk
+      - name: Upload Artifact - arm64-v8a
+        uses: actions/upload-artifact@v3
+        with:
+          path: "build/app/outputs/flutter-apk/app-arm64-v8a-release.apk"
+          name: Miru-${{github.ref_name}}-arm64-v8a.apk
+      - name: Upload Artifact - x86
+        uses: actions/upload-artifact@v3
+        with:
+          path: "build/app/outputs/flutter-apk/app-x86_64-release.apk"
+          name: Miru-${{github.ref_name}}-x86_64.apk
       - name: Release Packages
         uses: ncipollo/release-action@v1
         with:
@@ -115,12 +125,12 @@ jobs:
           ref: main
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: 3.24.1
+          flutter-version: 3.16.8
           channel: stable
       - name: Install project dependencies
         run: flutter pub get
       - name: Build artifacts
-        run: flutter build windows
+        run: flutter build windows --release -v
       - name: Build Installer
         run: iex ("& {0} {1} {2}" -f '"C:\Program Files (x86)\Inno Setup 6\iscc.exe"',"/DMyAppVersion='${{github.ref_name}}'", ".\inno_setup.iss")
       - name: Archive Release

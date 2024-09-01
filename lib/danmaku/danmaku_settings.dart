@@ -5,7 +5,7 @@ import 'package:miru_app/bean/settings/settings.dart';
 import 'package:miru_app/utils/storage.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:miru_app/pages/popular/popular_controller.dart';
+import 'package:miru_app/popular/popular_controller.dart';
 import 'package:miru_app/bean/appbar/sys_app_bar.dart';
 
 class DanmakuSettingsPage extends StatefulWidget {

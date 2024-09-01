@@ -241,7 +241,7 @@ class _VideoPlayerContenState extends State<VideoPlayerConten> {
                   },
                 ),
 PopupMenuButton(
-  tooltip: "Toggle Danmaku",
+  tooltip: "Danmaku",
   icon: const Icon(
     Icons.comment,
     color: Colors.white,
@@ -258,7 +258,7 @@ PopupMenuButton(
                 _c.toggleDanmaku();
               }
             },
-            title: Text('Toggle Danmaku'),
+            title: Text('弹幕开关'),
           );
         }),
       ),
@@ -468,7 +468,7 @@ PopupMenuButton(
                   },
                 ),
                 PopupMenuButton(
-  tooltip: "Toggle Danmaku",
+  tooltip: "Danmaku",
   icon: const Icon(
     Icons.comment,
     color: Colors.white,
@@ -485,7 +485,7 @@ PopupMenuButton(
                 _c.toggleDanmaku();
               }
             },
-            title: Text('Toggle Danmaku'),
+            title: Text('弹幕开关'),
           );
         }),
       ),

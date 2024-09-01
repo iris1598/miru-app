@@ -1,5 +1,5 @@
-import 'package:miru_app/pages/settings/danmaku/danmaku_settings.dart';
-import 'package:miru_app/pages/settings/danmaku/danmaku_source_settings.dart';
+import 'package:miru_app/danmaku/danmaku_settings.dart';
+import 'package:miru_app/danmaku/danmaku_source_settings.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class DanmakuModule extends Module {
