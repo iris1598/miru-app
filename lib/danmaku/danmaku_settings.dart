@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:miru_app/danmaku/danmaku_source_settings.dart';
 import 'package:miru_app/router/router.dart';
 import 'package:miru_app/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +37,6 @@ class _DanmakuSettingsPageState extends State<DanmakuSettingsPage> {
   }
 
   void onBackPressed(BuildContext context) {
-    navigationBarState.showNavigate();
     // Navigator.of(context).pop();
   }
 
@@ -60,7 +64,6 @@ class _DanmakuSettingsPageState extends State<DanmakuSettingsPage> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      navigationBarState.hideNavigate();
     });
     return PopScope(
       canPop: true,
@@ -73,7 +76,11 @@ class _DanmakuSettingsPageState extends State<DanmakuSettingsPage> {
           children: [
             ListTile(
               onTap: () {
-                router.push('/settings/danmaku/source');
+                if (!Platform.isAndroid) {
+                  router.push('/settings/danmaku/source');
+                } else {
+                  Get.to(() => const DanmakuSourceSettingsPage());
+                } 
               },
               dense: false,
               title: const Text('弹幕来源'),

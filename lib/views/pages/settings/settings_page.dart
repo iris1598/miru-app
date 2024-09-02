@@ -5,6 +5,7 @@ import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:get/get.dart';
+import 'package:miru_app/danmaku/danmaku_settings.dart';
 import 'package:miru_app/data/providers/tmdb_provider.dart';
 import 'package:miru_app/controllers/application_controller.dart';
 import 'package:miru_app/router/router.dart';
@@ -417,7 +418,11 @@ class _SettingsPageState extends State<SettingsPage> {
               title: '弹幕',
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
+                if (!Platform.isAndroid) {
                   router.push('/settings/danmaku');
+                } else {
+                  Get.to(() => const DanmakuSettingsPage());
+                } 
               },
             ),
       const SizedBox(height: 20),
