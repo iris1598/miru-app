@@ -94,6 +94,6 @@ class ReaderController<T> extends GetxController {
         KazumiLogger().log(Level.error, '同步记录失败 ${e.toString()}');
       }
     }
-    else{await Get.find<HomePageController>().onRefresh();}
+    await Get.find<HomePageController>().onRefresh();
   }
 }
