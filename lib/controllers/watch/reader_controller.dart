@@ -1,11 +1,16 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:logger/logger.dart';
 import 'package:miru_app/models/extension.dart';
 import 'package:miru_app/models/history.dart';
 import 'package:miru_app/controllers/home_controller.dart';
 import 'package:miru_app/data/services/database_service.dart';
 import 'package:miru_app/data/services/extension_service.dart';
+import 'package:miru_app/utils/logger.dart';
+import 'package:miru_app/utils/storage.dart';
+import 'package:miru_app/utils/webdav.dart';
 
 class ReaderController<T> extends GetxController {
   final String title;
@@ -78,6 +83,17 @@ class ReaderController<T> extends GetxController {
         ..totalProgress = totalProgress
         ..cover = cover,
     );
-    await Get.find<HomePageController>().onRefresh();
+    Box setting = GStorage.setting;
+    late bool webDavEnable = setting.get(SettingBoxKey.webDavEnable, defaultValue: false);
+          if (webDavEnable) {
+      try {
+        var webDav = WebDav();
+        webDav.uploadDefaultIsar();
+      } catch (e) {
+        //SmartDialog.showToast('同步记录失败 ${e.toString()}');
+        KazumiLogger().log(Level.error, '同步记录失败 ${e.toString()}');
+      }
+    }
+    else{await Get.find<HomePageController>().onRefresh();}
   }
 }

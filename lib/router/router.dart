@@ -20,6 +20,8 @@ import 'package:miru_app/views/pages/search/search_page.dart';
 import 'package:miru_app/views/pages/settings/settings_page.dart';
 import 'package:miru_app/views/pages/tracking/anilist_more_page.dart';
 import 'package:miru_app/views/pages/tracking/anilist_tracking_page.dart';
+import 'package:miru_app/webdav_editor/webdav_editor_page.dart';
+import 'package:miru_app/webdav_editor/webdav_setting.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -98,6 +100,14 @@ final router = GoRouter(
         GoRoute(
           path: '/settings/danmaku/source',
           builder: (context, state) => _animation(const DanmakuSourceSettingsPage()),
+        ),
+        GoRoute(
+          path: '/settings/webdav',
+          builder: (context, state) => _animation(const WebDavSettingsPage()),
+        ),
+        GoRoute(
+          path: '/settings/webdav/editor',
+          builder: (context, state) => _animation(const WebDavEditorPage()),
         ),
         GoRoute(
           path: '/settings/anilist_more',

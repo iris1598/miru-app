@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:miru_app/controllers/application_controller.dart';
+import 'package:miru_app/models/webdav.dart';
 import 'package:miru_app/request/request.dart';
 import 'package:miru_app/utils/log.dart';
 import 'package:miru_app/utils/miru_directory.dart';
@@ -96,6 +97,7 @@ void main(List<String> args) async {
   await GStorage.init();
   Request();
   await Request.setCookie();
+  await webdavinit.init();
 }
 
 class MainApp extends StatefulWidget {

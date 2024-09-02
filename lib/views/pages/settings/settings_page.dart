@@ -26,6 +26,7 @@ import 'package:miru_app/utils/miru_storage.dart';
 import 'package:miru_app/utils/application.dart';
 import 'package:miru_app/views/widgets/list_title.dart';
 import 'package:miru_app/views/widgets/platform_widget.dart';
+import 'package:miru_app/webdav_editor/webdav_setting.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tmdb_api/tmdb_api.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -422,6 +423,29 @@ class _SettingsPageState extends State<SettingsPage> {
                   router.push('/settings/danmaku');
                 } else {
                   Get.to(() => const DanmakuSettingsPage());
+                } 
+              },
+            ),
+                        const SizedBox(height: 10),
+            SettingsTile(
+              isCard: true,
+              icon: Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  image: const DecorationImage(
+                    image: AssetImage('assets/icon/kazumi.jpg'),
+                  ),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+              title: 'webdav同步',
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                if (!Platform.isAndroid) {
+                  router.push('/settings/webdav');
+                } else {
+                  Get.to(() => const WebDavSettingsPage());
                 } 
               },
             ),

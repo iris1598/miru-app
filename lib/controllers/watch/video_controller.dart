@@ -24,6 +24,7 @@ import 'package:miru_app/request/danmaku.dart';
 import 'package:miru_app/utils/logger.dart';
 import 'package:miru_app/utils/request.dart';
 import 'package:miru_app/utils/storage.dart';
+import 'package:miru_app/utils/webdav.dart';
 import 'package:miru_app/views/dialogs/bt_dialog.dart';
 import 'package:miru_app/controllers/home_controller.dart';
 import 'package:miru_app/controllers/main_controller.dart';
@@ -53,6 +54,7 @@ class VideoPlayerController extends GetxController {
   int bangumiID = 0;
  late bool danmakuonon;
  late final DanmakuController danmakuController;
+  late bool webDavEnable;
   // 弹幕开关
 final danmakuOn = RxBool(true); // 默认值设置为 true
 
@@ -117,6 +119,7 @@ void toggleDanmaku() {
         setting.get(SettingBoxKey.danmakuGamerSource, defaultValue: true);
     _danmakuDanDanSource =
         setting.get(SettingBoxKey.danmakuDanDanSource, defaultValue: true);
+    webDavEnable = setting.get(SettingBoxKey.webDavEnable, defaultValue: false);
     int _lastDanmakuTime = -1;
     if (Platform.isAndroid) {
       // 切换到横屏
@@ -545,7 +548,16 @@ void toggleDanmaku() {
               ..progress = player.state.position.inSeconds.toString()
               ..totalProgress = player.state.duration.inSeconds.toString(),
           );
-          await Get.find<HomePageController>().onRefresh();
+                if (webDavEnable) {
+      try {
+        var webDav = WebDav();
+        webDav.uploadDefaultIsar();
+      } catch (e) {
+        //SmartDialog.showToast('同步记录失败 ${e.toString()}');
+        KazumiLogger().log(Level.error, '同步记录失败 ${e.toString()}');
+      }
+    }
+          else{await Get.find<HomePageController>().onRefresh();}
         },
       );
     });

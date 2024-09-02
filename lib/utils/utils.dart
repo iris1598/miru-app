@@ -14,7 +14,6 @@ class Utils {
     String randomElement = userAgentsList[random.nextInt(userAgentsList.length)];
     return randomElement;
   }
-
   static generateDanmakuColor(int colorValue) {
     // 提取颜色分量
     int red = (colorValue >> 16) & 0xFF;

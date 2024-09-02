@@ -1,10 +1,13 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:miru_app/data/providers/anilist_provider.dart';
 import 'package:miru_app/models/index.dart';
 import 'package:miru_app/controllers/watch/reader_controller.dart';
 import 'package:miru_app/data/services/database_service.dart';
+import 'package:miru_app/utils/storage.dart';
+import 'package:miru_app/utils/webdav.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:miru_app/utils/miru_storage.dart';
@@ -188,6 +191,16 @@ class ComicController extends ReaderController<ExtensionMangaWatch> {
         currentPage.value.toString(),
         pages.toString(),
       );
+    }
+    Box setting = GStorage.setting;
+    late bool webDavEnable = setting.get(SettingBoxKey.webDavEnable, defaultValue: false);
+    if (webDavEnable) {
+      try {
+        var webDav = WebDav();
+        webDav.uploadDefaultIsar();
+      } catch (e) {
+        //SmartDialog.showToast('同步记录失败 ${e.toString()}');
+      }
     }
     if (MiruStorage.getSetting(SettingKey.autoTracking) && anilistID != "") {
       AniListProvider.editList(
