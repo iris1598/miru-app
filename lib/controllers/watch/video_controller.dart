@@ -12,6 +12,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
@@ -22,6 +23,7 @@ import 'package:miru_app/models/index.dart';
 import 'package:miru_app/request/danmaku.dart';
 import 'package:miru_app/utils/logger.dart';
 import 'package:miru_app/utils/request.dart';
+import 'package:miru_app/utils/storage.dart';
 import 'package:miru_app/views/dialogs/bt_dialog.dart';
 import 'package:miru_app/controllers/home_controller.dart';
 import 'package:miru_app/controllers/main_controller.dart';
@@ -103,14 +105,17 @@ void toggleDanmaku() {
   danmakuOn.value = !danmakuOn.value;
   danmakuController.clear();
 }
-
   @override
   void onInit() async {
-    _danmakuColor = false; // 假设这是您想要的默认值
-    _danmakuBiliBiliSource = true; // 假设这是您想要的默认值
-    _danmakuGamerSource = true; // 假设这是您想要的默认值
-    _danmakuDanDanSource = true; // 假设这是您想要的默认值
-    
+    Box setting = GStorage.setting;
+    _danmakuColor = setting.get(SettingBoxKey.danmakuColor, defaultValue: true);
+    _danmakuBiliBiliSource =
+        setting.get(SettingBoxKey.danmakuBiliBiliSource, defaultValue: true);
+    _danmakuGamerSource =
+        setting.get(SettingBoxKey.danmakuGamerSource, defaultValue: true);
+    _danmakuDanDanSource =
+        setting.get(SettingBoxKey.danmakuDanDanSource, defaultValue: true);
+    int _lastDanmakuTime = -1;
     if (Platform.isAndroid) {
       // 切换到横屏
       SystemChrome.setPreferredOrientations(
@@ -127,12 +132,19 @@ void toggleDanmaku() {
     }
     play();
     getDanDanmaku(title,playIndex);
-    Timer getPlayerTimer() {
+    getPlayerTimer() {
     return Timer.periodic(const Duration(seconds: 1), (timer) {
       // 弹幕相关
       if (player.state.playing == true) {
          debugPrint('当前播放到 ${player.state.position.inSeconds}');
-        danDanmakus[player.state.position.inSeconds]
+         final currentTime = player.state.position.inSeconds;
+          // 判断当前时间是否与上次添加弹幕的时间相同
+     if (currentTime == _lastDanmakuTime) {
+          // 时间相同，不添加弹幕
+         return;
+       }
+  _lastDanmakuTime = currentTime;
+        danDanmakus[currentTime]
             ?.asMap()
             .forEach((idx, danmaku) async {
           if (!_danmakuColor) {
