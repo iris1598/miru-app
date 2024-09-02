@@ -51,7 +51,7 @@ class VideoPlayerController extends GetxController {
   final String anilistID;
 
   int bangumiID = 0;
-
+ late bool danmakuonon;
  late final DanmakuController danmakuController;
   // 弹幕开关
 final danmakuOn = RxBool(true); // 默认值设置为 true
@@ -108,6 +108,8 @@ void toggleDanmaku() {
   @override
   void onInit() async {
     Box setting = GStorage.setting;
+    danmakuonon= setting.get(SettingBoxKey.danmakuEnabledByDefault, defaultValue: false);
+    danmakuOn.value=danmakuonon;
     _danmakuColor = setting.get(SettingBoxKey.danmakuColor, defaultValue: true);
     _danmakuBiliBiliSource =
         setting.get(SettingBoxKey.danmakuBiliBiliSource, defaultValue: true);

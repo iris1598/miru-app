@@ -4,6 +4,8 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:miru_app/danmaku/danmaku_settings.dart';
+import 'package:miru_app/danmaku/danmaku_source_settings.dart';
 import 'package:miru_app/data/providers/anilist_provider.dart';
 import 'package:miru_app/models/index.dart';
 import 'package:miru_app/views/pages/detail_page.dart';
@@ -88,6 +90,14 @@ final router = GoRouter(
         GoRoute(
           path: '/settings/anilist',
           builder: (context, state) => _animation(const AniListTrackingPage()),
+        ),
+        GoRoute(
+          path: '/settings/danmaku',
+          builder: (context, state) => _animation(const DanmakuSettingsPage()),
+        ),
+        GoRoute(
+          path: '/settings/danmaku/source',
+          builder: (context, state) => _animation(const DanmakuSourceSettingsPage()),
         ),
         GoRoute(
           path: '/settings/anilist_more',

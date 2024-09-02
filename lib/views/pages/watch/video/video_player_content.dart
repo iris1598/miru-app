@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:canvas_danmaku/canvas_danmaku.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:miru_app/controllers/watch/video_controller.dart';
 import 'package:miru_app/utils/i18n.dart';
 import 'package:miru_app/utils/router.dart';
+import 'package:miru_app/utils/storage.dart';
 import 'package:miru_app/views/widgets/platform_widget.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -22,6 +24,15 @@ class VideoPlayerConten extends StatefulWidget {
 }
 
 class _VideoPlayerContenState extends State<VideoPlayerConten> {
+  late bool _border;
+  late double _opacity;
+  late double _duration;
+  late double danmakuArea;
+  late bool _hideTop;
+  late bool _hideBottom;
+  late bool _hideScroll;
+  late bool _massiveMode;
+
   late final _c = Get.find<VideoPlayerController>(tag: widget.tag);
   late final DanmakuController danmakuController;
   final speeds = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
@@ -547,15 +558,35 @@ Widget build(BuildContext context) {
 }
 
 Widget _buildWithDanmaku(BuildContext context, Widget Function(BuildContext) builder) {
+    Box setting = GStorage.setting;
+    _border = setting.get(SettingBoxKey.danmakuBorder, defaultValue: true);
+    _opacity = setting.get(SettingBoxKey.danmakuOpacity, defaultValue: 1.0);
+    _duration = 8;
+    danmakuArea = setting.get(SettingBoxKey.danmakuArea, defaultValue: 1.0);
+    _hideTop = !setting.get(SettingBoxKey.danmakuTop, defaultValue: true);
+    _hideBottom =
+        !setting.get(SettingBoxKey.danmakuBottom, defaultValue: false);
+    _hideScroll = !setting.get(SettingBoxKey.danmakuScroll, defaultValue: true);
+    _massiveMode =
+        setting.get(SettingBoxKey.danmakuMassive, defaultValue: false);
   return Stack(
     children: [
       builder(context), // This is the video player widget
       DanmakuScreen(
-        createdController: (e) {
-          danmakuController = e;
-          Get.find<VideoPlayerController>(tag: widget.tag).danmakuController = danmakuController;
-        },
-        option: DanmakuOption(),
+                              createdController: (DanmakuController e) {
+                                danmakuController = e;
+                                Get.find<VideoPlayerController>(tag: widget.tag).danmakuController = danmakuController;
+                                // debugPrint('弹幕控制器创建成功');
+                              },
+                              option: DanmakuOption(
+                                hideTop: _hideTop,
+                                hideScroll: _hideScroll,
+                                hideBottom: _hideBottom,
+                                opacity: _opacity,
+                                duration: _duration.toInt(),
+                                showStroke: _border,
+                                massiveMode: _massiveMode,
+                              ),
       ),
     ],
   );

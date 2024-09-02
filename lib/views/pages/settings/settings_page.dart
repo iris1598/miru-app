@@ -401,6 +401,25 @@ class _SettingsPageState extends State<SettingsPage> {
         title: 'settings.tracking'.i18n,
         subTitle: 'settings.tracking-subtitle'.i18n,
       ),
+            const SizedBox(height: 10),
+            SettingsTile(
+              isCard: true,
+              icon: Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  image: const DecorationImage(
+                    image: AssetImage('assets/icon/kazumi.jpg'),
+                  ),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+              title: '弹幕',
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                  router.push('/settings/danmaku');
+              },
+            ),
       const SizedBox(height: 20),
       // 高级
       ListTitle(title: 'settings.advanced'.i18n),
