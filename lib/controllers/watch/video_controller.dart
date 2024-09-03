@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
@@ -136,6 +137,7 @@ void toggleDanmaku() {
           .setProperty('demuxer-max-bytes', '30MiB');
     }
     play();
+    danmakuController.pause();
     getDanDanmaku(title,playIndex);
     getPlayerTimer() {
     return Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -193,10 +195,13 @@ void toggleDanmaku() {
     // 切换剧集
     ever(index, (callback) {
       play();
+      danmakuController.pause();
+      danmakuController.clear();
+      getDanDanmaku(title,index.value);
     });
 // 播放状态监听，当开始播放时启动计时器
   player.stream.playing.listen((playing) {
-    if (playing) {
+    if (playing&&!player.state.buffering) {
       danmakuController.resume();
       getPlayerTimer();
     }
@@ -470,6 +475,7 @@ void toggleDanmaku() {
         await Future.delayed(const Duration(seconds: 3));
 
         play();
+        danmakuController.pause();
 
         return;
       }
@@ -553,7 +559,7 @@ void toggleDanmaku() {
         var webDav = WebDav();
         webDav.uploadDefaultIsar();
       } catch (e) {
-        //SmartDialog.showToast('同步记录失败 ${e.toString()}');
+        SmartDialog.showToast('同步记录失败 ${e.toString()}');
         KazumiLogger().log(Level.error, '同步记录失败 ${e.toString()}');
       }
     }

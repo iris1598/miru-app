@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
@@ -90,7 +91,7 @@ class ReaderController<T> extends GetxController {
         var webDav = WebDav();
         webDav.uploadDefaultIsar();
       } catch (e) {
-        //SmartDialog.showToast('同步记录失败 ${e.toString()}');
+        SmartDialog.showToast('同步记录失败 ${e.toString()}');
         KazumiLogger().log(Level.error, '同步记录失败 ${e.toString()}');
       }
     }

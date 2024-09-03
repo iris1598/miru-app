@@ -3,14 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:miru_app/router/router.dart';
-import 'package:miru_app/utils/utils.dart';
 import 'package:miru_app/bean/settings/settings.dart';
 import 'package:miru_app/utils/storage.dart';
 import 'package:miru_app/utils/webdav.dart';
 import 'package:hive/hive.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:miru_app/bean/appbar/sys_app_bar.dart';
 import 'package:miru_app/webdav_editor/webdav_editor_page.dart';
 
@@ -41,19 +38,19 @@ class _PlayerSettingsPageState extends State<WebDavSettingsPage> {
         await setting.get(SettingBoxKey.webDavURL, defaultValue: '');
     if (webDavURL == '') {
       await setting.put(SettingBoxKey.webDavEnable, false);
-      debugPrint('未找到有效的webdav配置');
+      SmartDialog.showToast('未找到有效的webdav配置');
       return;
     }
     try {
-      debugPrint('尝试从WebDav同步');
+      SmartDialog.showToast('尝试从WebDav同步');
       var webDav = WebDav();
       await webDav.downloadAndMigrateIsar();
-      debugPrint('同步成功');
+      SmartDialog.showToast('同步成功');
     } catch (e) {
       if (e.toString().contains('Error: Not Found')) {
-        debugPrint('配置成功, 这是一个不存在已有同步文件的全新WebDav');
+        SmartDialog.showToast('配置成功, 这是一个不存在已有同步文件的全新WebDav');
       } else {
-        debugPrint('同步失败 ${e.toString()}');
+        SmartDialog.showToast('同步失败 ${e.toString()}');
       }
     }
   }
@@ -63,15 +60,15 @@ class _PlayerSettingsPageState extends State<WebDavSettingsPage> {
         await setting.get(SettingBoxKey.webDavEnable, defaultValue: false);
     if (webDavEnable) {
       try {
-        debugPrint('尝试上传到WebDav');
+        SmartDialog.showToast('尝试上传到WebDav');
         var webDav = WebDav();
         await webDav.uploadDefaultIsar();
-        debugPrint('同步成功');
+        SmartDialog.showToast('同步成功');
       } catch (e) {
-        debugPrint('同步失败 ${e.toString()}');
+        SmartDialog.showToast('同步失败 ${e.toString()}');
       }
     } else {
-      debugPrint('未开启WebDav同步或配置无效');
+      SmartDialog.showToast('未开启WebDav同步或配置无效');
     }
   }
 
@@ -80,15 +77,15 @@ class _PlayerSettingsPageState extends State<WebDavSettingsPage> {
         await setting.get(SettingBoxKey.webDavEnable, defaultValue: false);
     if (webDavEnable) {
       try {
-        debugPrint('尝试从WebDav同步');
+        SmartDialog.showToast('尝试从WebDav同步');
         var webDav = WebDav();
         await webDav.downloadAndMigrateIsar();
-        debugPrint('同步成功');
+        SmartDialog.showToast('同步成功');
       } catch (e) {
-        debugPrint('同步失败 ${e.toString()}');
+        SmartDialog.showToast('同步失败 ${e.toString()}');
       }
     } else {
-      debugPrint('未开启WebDav同步或配置无效');
+      SmartDialog.showToast('未开启WebDav同步或配置无效');
     }
   }
 

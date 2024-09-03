@@ -73,16 +73,16 @@ class _WebDavEditorPageState extends State<WebDavEditorPage> {
           try {
             await webDav.init();
           } catch (e) {
-            debugPrint('配置失败 ${e.toString()}');
+            SmartDialog.showToast('配置失败 ${e.toString()}');
             await setting.put(SettingBoxKey.webDavEnable, false);
             return;
           }
-          debugPrint('配置成功, 开始测试');
+          SmartDialog.showToast('配置成功, 开始测试');
           try {
             await webDav.ping();
-            debugPrint('测试成功');
+            SmartDialog.showToast('测试成功');
           } catch (e) {
-            debugPrint('测试失败 ${e.toString()}');
+            SmartDialog.showToast('测试失败 ${e.toString()}');
             await setting.put(SettingBoxKey.webDavEnable, false);
           }
         },

@@ -6,10 +6,15 @@ import 'dart:io';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_windows_webview/flutter_windows_webview.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:logger/logger.dart';
 import 'package:miru_app/data/providers/tmdb_provider.dart';
 import 'package:miru_app/models/index.dart';
+import 'package:miru_app/utils/storage.dart';
+import 'package:miru_app/utils/webdav.dart';
 import 'package:miru_app/views/dialogs/tmdb_binding.dart';
 import 'package:miru_app/controllers/home_controller.dart';
 import 'package:miru_app/controllers/main_controller.dart';
@@ -22,6 +27,8 @@ import 'package:miru_app/utils/external_player.dart';
 import 'package:miru_app/utils/i18n.dart';
 import 'package:miru_app/utils/miru_storage.dart';
 import 'package:miru_app/views/widgets/messenger.dart';
+
+import '../utils/logger.dart';
 
 class DetailPageController extends GetxController {
   DetailPageController({
@@ -327,6 +334,17 @@ class DetailPageController extends GetxController {
       rethrow;
     }
     await refreshFavorite();
+        Box setting = GStorage.setting;
+    late bool webDavEnable = setting.get(SettingBoxKey.webDavEnable, defaultValue: false);
+          if (webDavEnable) {
+      try {
+        var webDav = WebDav();
+        webDav.uploadDefaultIsar();
+      } catch (e) {
+        SmartDialog.showToast('同步记录失败 ${e.toString()}');
+        KazumiLogger().log(Level.error, '同步记录失败 ${e.toString()}');
+      }
+    }
     Get.find<HomePageController>().onRefresh();
   }
 

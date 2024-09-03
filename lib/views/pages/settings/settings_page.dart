@@ -426,7 +426,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 } 
               },
             ),
-                        const SizedBox(height: 10),
+            const SizedBox(height: 10),
             SettingsTile(
               isCard: true,
               icon: Container(

@@ -5,6 +5,7 @@ import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:miru_app/controllers/application_controller.dart';
@@ -127,6 +128,7 @@ class _MainAppState extends State<MainApp> {
       localizationsDelegates: [
         I18nUtils.flutterI18nDelegate,
       ],
+      builder: FlutterSmartDialog.init(),
     );
   }
 
@@ -148,6 +150,7 @@ class _MainAppState extends State<MainApp> {
       localizationsDelegates: [
         I18nUtils.flutterI18nDelegate,
       ],
+      builder: FlutterSmartDialog.init(),
     );
   }
 
