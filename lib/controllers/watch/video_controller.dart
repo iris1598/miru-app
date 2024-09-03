@@ -42,6 +42,7 @@ import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:crypto/crypto.dart';
 import 'package:miru_app/utils/miru_storage.dart';
 import 'package:flutter_hls_parser/flutter_hls_parser.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class VideoPlayerController extends GetxController {
   final String title;
@@ -202,10 +203,12 @@ void toggleDanmaku() {
 // 播放状态监听，当开始播放时启动计时器
   player.stream.playing.listen((playing) {
     if (playing&&!player.state.buffering) {
+      WakelockPlus.enable();
       danmakuController.resume();
       getPlayerTimer();
     }
     else{
+      WakelockPlus.disable();
       danmakuController.pause();
     }
   });
