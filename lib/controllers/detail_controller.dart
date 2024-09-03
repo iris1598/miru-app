@@ -144,14 +144,6 @@ class DetailPageController extends GetxController {
         ),
       )
     ]);
-      if (LayoutUtils.isTablet) {
-        SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeLeft, 
-        DeviceOrientation.landscapeRight,
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-        ]);
-      }
     super.onInit();
   }
 
@@ -457,5 +449,13 @@ class DetailPageController extends GetxController {
     scrollController.dispose();
     Get.find<MainController>().setAcitons([]);
     super.onClose();
+    if (LayoutUtils.isTablet) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft, 
+        DeviceOrientation.landscapeRight,
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+      }
   }
 }
