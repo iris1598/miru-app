@@ -5,7 +5,6 @@ import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_windows_webview/flutter_windows_webview.dart';
@@ -14,7 +13,6 @@ import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
 import 'package:miru_app/data/providers/tmdb_provider.dart';
 import 'package:miru_app/models/index.dart';
-import 'package:miru_app/utils/layout.dart';
 import 'package:miru_app/utils/storage.dart';
 import 'package:miru_app/utils/webdav.dart';
 import 'package:miru_app/views/dialogs/tmdb_binding.dart';
@@ -449,13 +447,5 @@ class DetailPageController extends GetxController {
     scrollController.dispose();
     Get.find<MainController>().setAcitons([]);
     super.onClose();
-    if (LayoutUtils.isTablet) {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeLeft, 
-        DeviceOrientation.landscapeRight,
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
-      }
   }
 }
