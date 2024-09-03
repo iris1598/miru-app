@@ -608,12 +608,7 @@ void toggleDanmaku() {
       );
       // 如果是平板则不改变
       if (LayoutUtils.isTablet) {
-        SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeLeft, 
-        DeviceOrientation.landscapeRight,
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-        ]);
+        return;
       }
       // 切换回竖屏
       SystemChrome.setPreferredOrientations([
