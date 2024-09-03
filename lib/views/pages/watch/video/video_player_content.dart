@@ -9,6 +9,7 @@ import 'package:miru_app/controllers/watch/video_controller.dart';
 import 'package:miru_app/utils/i18n.dart';
 import 'package:miru_app/utils/router.dart';
 import 'package:miru_app/utils/storage.dart';
+import 'package:miru_app/utils/utils.dart';
 import 'package:miru_app/views/widgets/platform_widget.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -30,6 +31,7 @@ class _VideoPlayerContenState extends State<VideoPlayerConten> {
   late double danmakuArea;
   late bool _hideTop;
   late bool _hideBottom;
+  late double _fontSize;
   late bool _hideScroll;
   late bool _massiveMode;
 
@@ -569,6 +571,8 @@ Widget _buildWithDanmaku(BuildContext context, Widget Function(BuildContext) bui
     _hideScroll = !setting.get(SettingBoxKey.danmakuScroll, defaultValue: true);
     _massiveMode =
         setting.get(SettingBoxKey.danmakuMassive, defaultValue: false);
+    _fontSize = setting.get(SettingBoxKey.danmakuFontSize,
+       defaultValue: (Utils.isCompact()) ? 16.0 : 25.0);
   return Stack(
     children: [
       builder(context), // This is the video player widget
@@ -583,6 +587,7 @@ Widget _buildWithDanmaku(BuildContext context, Widget Function(BuildContext) bui
                                 hideScroll: _hideScroll,
                                 hideBottom: _hideBottom,
                                 opacity: _opacity,
+                                fontSize: _fontSize,
                                 duration: _duration.toInt(),
                                 showStroke: _border,
                                 massiveMode: _massiveMode,
