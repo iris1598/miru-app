@@ -123,6 +123,7 @@ void toggleDanmaku() {
         setting.get(SettingBoxKey.danmakuDanDanSource, defaultValue: true);
     webDavEnable = setting.get(SettingBoxKey.webDavEnable, defaultValue: false);
     int _lastDanmakuTime = -1;
+    bool _timerActive = false;
     if (Platform.isAndroid) {
       // 切换到横屏
       SystemChrome.setPreferredOrientations(
@@ -205,7 +206,10 @@ void toggleDanmaku() {
     if (playing&&!player.state.buffering) {
       WakelockPlus.enable();
       danmakuController.resume();
+      if(_timerActive == false){
       getPlayerTimer();
+      _timerActive = true;
+      }
     }
     else{
       WakelockPlus.disable();
