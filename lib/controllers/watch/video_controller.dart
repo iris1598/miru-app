@@ -54,11 +54,11 @@ class VideoPlayerController extends GetxController {
   final String anilistID;
 
   int bangumiID = 0;
- late bool danmakuonon;
- late final DanmakuController danmakuController;
+  late bool danmakuonon;
+  late final DanmakuController danmakuController;
   late bool webDavEnable;
   // 弹幕开关
-final danmakuOn = RxBool(true); // 默认值设置为 true
+  final danmakuOn = RxBool(true); // 默认值设置为 true
 
 
   Map<int, List<Danmaku>> danDanmakus = {};
@@ -145,7 +145,7 @@ void toggleDanmaku() {
     return Timer.periodic(const Duration(seconds: 1), (timer) {
       // 弹幕相关
       if (player.state.playing == true) {
-         debugPrint('当前播放到 ${player.state.position.inSeconds}');
+         //debugPrint('当前播放到 ${player.state.position.inSeconds}');
          final currentTime = player.state.position.inSeconds;
           // 判断当前时间是否与上次添加弹幕的时间相同
      if (currentTime == _lastDanmakuTime) {
@@ -170,7 +170,7 @@ void toggleDanmaku() {
                   danmaku.source.contains('Gamer'))) {
             return;
           }
-          debugPrint('Adding danmaku: ${danmaku.message}');
+          //debugPrint('Adding danmaku: ${danmaku.message}');
           await Future.delayed(
               Duration(
                   milliseconds: idx *
