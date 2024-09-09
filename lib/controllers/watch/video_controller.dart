@@ -24,6 +24,7 @@ import 'package:miru_app/models/index.dart';
 import 'package:miru_app/request/danmaku.dart';
 import 'package:miru_app/utils/logger.dart';
 import 'package:miru_app/utils/request.dart';
+import 'package:miru_app/utils/router.dart';
 import 'package:miru_app/utils/storage.dart';
 import 'package:miru_app/utils/webdav.dart';
 import 'package:miru_app/views/dialogs/bt_dialog.dart';
@@ -335,6 +336,13 @@ void toggleDanmaku() {
 
     super.onInit();
     keyboardShortcuts.addAll({
+      const SingleActivator(LogicalKeyboardKey.escape):(){
+        if (isFullScreen.value) {
+          WindowManager.instance.setFullScreen(false);
+        }
+        RouterUtils.pop();
+      },
+      const SingleActivator(LogicalKeyboardKey.keyF):() => toggleFullscreen(),
       const SingleActivator(LogicalKeyboardKey.mediaPlay): () => player.play(),
       const SingleActivator(LogicalKeyboardKey.mediaPause): () =>
           player.pause(),
